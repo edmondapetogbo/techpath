@@ -297,7 +297,37 @@ let step=0, answers=[], studentName='', lastResult=null, loadingInterval=null;
 
 // ─── Storage ──────────────────────────────────────────────────────────────────
 function loadR(){try{return JSON.parse(localStorage.getItem('tp_responses')||'[]')}catch{return[]}}
-function saveR(e){const a=loadR();a.push(e);localStorage.setItem('tp_responses',JSON.stringify(a))}
+async function saveR(e){
+
+  const a = loadR();
+  a.push(e);
+  localStorage.setItem(
+      'tp_responses',
+      JSON.stringify(a)
+  );
+
+  try{
+      await fetch(
+          "PASTE_YOUR_APPS_SCRIPT_URL_HERE",
+          {
+              method:"POST",
+              headers:{
+                  "Content-Type":"application/json"
+              },
+              body:JSON.stringify({
+                  name:e.name,
+                  topMatch:e.top3[0]?.id || "",
+                  topScore:e.top3[0]?.match || "",
+                  secondMatch:e.top3[1]?.id || "",
+                  thirdMatch:e.top3[2]?.id || "",
+                  lang:e.lang
+              })
+          }
+      );
+  }catch(err){
+      console.error(err);
+  }
+}
 function clearAllData(){
   if(!confirm(s('clearConfirm')))return;
   localStorage.removeItem('tp_responses');

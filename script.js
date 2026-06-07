@@ -298,7 +298,6 @@ let step=0, answers=[], studentName='', lastResult=null, loadingInterval=null;
 // ─── Storage ──────────────────────────────────────────────────────────────────
 function loadR(){try{return JSON.parse(localStorage.getItem('tp_responses')||'[]')}catch{return[]}}
 async function saveR(e){
-
   const a = loadR();
   a.push(e);
   localStorage.setItem(
@@ -308,12 +307,10 @@ async function saveR(e){
 
   try{
       await fetch(
-          "AKfycbyxSxJ6ZDAWdHF6GVVrFMwkDjsrkySmY1xS-wlYqG1HWGrqHZG-lrhJ90J1F05gp6n48Q",
+          "https://script.google.com/macros/s/AKfycbw89UEv2Agq2Fyc_ScysuGpUmfueIZUQZ5rJFNal9ez_Kfxk-fKIKaN7yZC6_3RBbOJng/exec",
           {
               method:"POST",
-              headers:{
-                  "Content-Type":"application/json"
-              },
+              
               body:JSON.stringify({
                   name:e.name,
                   topMatch:e.top3[0]?.id || "",

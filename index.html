@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>TechPath</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@2.44.0/tabler-icons.min.css"/>
+<link rel="stylesheet" href="style.css"/>
+</head>
+<body>
+
+<!-- HOME -->
+<div id="page-home" class="page active">
+  <nav class="nav">
+    <div class="logo">Tech<span>Path</span></div>
+    <div class="nav-links">
+      <div class="lang-toggle">
+        <button class="lb" id="lb-en-h" onclick="setLang('en')">EN</button>
+        <button class="lb" id="lb-fr-h" onclick="setLang('fr')">FR</button>
+      </div>
+      <!-- Admin button: only shown when name field matches admin username -->
+      <button class="nav-btn" id="admin-btn" onclick="showAdminModal()" style="display:none"><i class="ti ti-layout-dashboard"></i> <span data-k="admin"></span></button>
+    </div>
+  </nav>
+  <div class="container">
+    <div class="hero-badge"><i class="ti ti-sparkles"></i> <span data-k="badge"></span></div>
+    <h1 class="hero-title" data-kh="heroTitle"></h1>
+    <p class="hero-sub" data-k="heroSub"></p>
+    <div class="paths-grid">
+      <span class="chip">Software Engineer</span><span class="chip">Data Scientist</span>
+      <span class="chip">AI / ML Engineer</span><span class="chip">Data Engineer</span>
+      <span class="chip">Cybersecurity</span><span class="chip">Game Developer</span>
+      <span class="chip">Embedded Systems</span><span class="chip">Systems Engineer</span>
+    </div>
+    <p class="nlabel" data-k="nameLabel"></p>
+    <input class="nfield" id="student-name" maxlength="40" oninput="checkAdminBtn()"/>
+    <button class="btn-start" onclick="startQuiz()"><i class="ti ti-arrow-right"></i> <span data-k="startBtn"></span></button>
+    <div class="stat-row">
+      <div class="stat-box"><div class="stat-num" id="hs-count">0</div><div class="stat-lbl" data-k="statStudents"></div></div>
+      <div class="stat-box"><div class="stat-num">8</div><div class="stat-lbl" data-k="statPaths"></div></div>
+      <div class="stat-box"><div class="stat-num">3 min</div><div class="stat-lbl" data-k="statTime"></div></div>
+    </div>
+  </div>
+</div>
+
+<!-- QUIZ -->
+<div id="page-quiz" class="page">
+  <nav class="nav">
+    <div class="logo">Tech<span>Path</span></div>
+    <div class="nav-links">
+      <div class="lang-toggle">
+        <button class="lb" id="lb-en-q" onclick="setLang('en')">EN</button>
+        <button class="lb" id="lb-fr-q" onclick="setLang('fr')">FR</button>
+      </div>
+    </div>
+  </nav>
+  <div class="container">
+    <div class="prog-track"><div class="prog-fill" id="prog-fill"></div></div>
+    <p class="qmeta" id="q-meta"></p>
+    <h2 class="qtext" id="q-text"></h2>
+    <p class="qsub" id="q-sub"></p>
+    <div class="options" id="options-list"></div>
+    <div class="qbtns">
+      <button class="btn-ghost" id="btn-back" onclick="goBack()"><i class="ti ti-arrow-left"></i></button>
+      <button class="btn-next" id="btn-next" onclick="goNext()" disabled><span data-k="next"></span></button>
+    </div>
+  </div>
+</div>
+
+<!-- LOADING -->
+<div id="page-loading" class="page">
+  <div class="load-inner">
+    <div class="orbit" id="load-orbit"></div>
+    <p class="load-msg" id="load-msg"></p>
+    <button class="btn-retry" id="btn-retry" onclick="retryFromLoading()">← Go back &amp; retry</button>
+  </div>
+</div>
+
+<!-- RESULT -->
+<div id="page-result" class="page">
+  <nav class="nav">
+    <div class="logo">Tech<span>Path</span></div>
+    <div class="nav-links">
+      <div class="lang-toggle">
+        <button class="lb" id="lb-en-r" onclick="setLang('en')">EN</button>
+        <button class="lb" id="lb-fr-r" onclick="setLang('fr')">FR</button>
+      </div>
+      <button class="nav-btn" onclick="showPage('page-home')">← <span data-k="home"></span></button>
+    </div>
+  </nav>
+  <div class="container">
+    <h2 class="rgreet" id="result-title"></h2>
+    <p class="rsub" id="result-sub"></p>
+    <div id="share-card-wrap">
+      <div id="share-card">
+        <div class="sc-logo">TechPath</div>
+        <div class="sc-lbl" id="sc-lbl" data-k="scLabel"></div>
+        <div class="sc-name" id="sc-name">—</div>
+        <div class="sc-paths" id="sc-paths"></div>
+        <div class="sc-footer" id="sc-footer" data-k="scFooter"></div>
+      </div>
+    </div>
+    <div class="rcards" id="result-cards"></div>
+    <div class="tip-box" id="tip-box" style="display:none">
+      <div class="tip-lbl"><i class="ti ti-bulb"></i> <span data-k="tipLabel"></span></div>
+      <div class="tip-txt" id="tip-text"></div>
+    </div>
+    <div class="action-row">
+      <button class="btn-share" onclick="copyShareText()"><i class="ti ti-copy"></i> <span data-k="copyBtn"></span></button>
+      <button class="btn-share" onclick="downloadCard()"><i class="ti ti-download"></i> <span data-k="saveBtn"></span></button>
+      <button class="btn-retake" onclick="showPage('page-home')"><i class="ti ti-refresh"></i> <span data-k="retakeBtn"></span></button>
+    </div>
+  </div>
+</div>
+
+<!-- ADMIN -->
+<div id="page-admin" class="page">
+  <div class="admin-wrap">
+    <nav class="nav" style="max-width:100%;padding:0 0 1.5rem">
+      <div class="logo">Tech<span>Path</span> <span style="font-size:13px;color:var(--muted);font-weight:400;margin-left:6px">/ Admin</span></div>
+      <div class="nav-links">
+        <div class="lang-toggle">
+          <button class="lb" id="lb-en-a" onclick="setLang('en')">EN</button>
+          <button class="lb" id="lb-fr-a" onclick="setLang('fr')">FR</button>
+        </div>
+        <button class="nav-btn" onclick="showPage('page-home')">← <span data-k="backQuiz"></span></button>
+        <button class="btn-clr" onclick="clearAllData()"><i class="ti ti-trash"></i> <span data-k="clearBtn"></span></button>
+      </div>
+    </nav>
+    <div class="admin-hd">
+      <div>
+        <div class="admin-title" data-k="adminTitle"></div>
+        <div class="admin-sub" id="admin-sub"></div>
+      </div>
+    </div>
+    <div class="stats-row" id="admin-stats"></div>
+    <div class="dist-sec" id="dist-section" style="display:none">
+      <div class="sec-title" data-k="distTitle"></div>
+      <div id="dist-bars"></div>
+    </div>
+    <div class="dist-sec">
+      <div class="sec-title" data-k="responsesTitle"></div>
+      <div id="responses-list"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ADMIN PASSWORD MODAL -->
+<div class="modal-overlay" id="admin-modal" style="display:none" onclick="closeModalIfOverlay(event)">
+  <div class="modal-box">
+    <div class="modal-title"><i class="ti ti-shield-lock" style="color:var(--accent);margin-right:6px"></i>Admin Access</div>
+    <p class="modal-sub">Enter the admin password to continue.</p>
+    <p class="nlabel">Password</p>
+    <input class="nfield" type="password" id="admin-pwd-input" placeholder="••••••••" onkeydown="if(event.key==='Enter')checkAdminPassword()" style="margin-bottom:0"/>
+    <p class="modal-error" id="modal-error">Incorrect password. Try again.</p>
+    <div class="modal-btns">
+      <button class="btn-modal-cancel" onclick="closeAdminModal()">Cancel</button>
+      <button class="btn-modal-ok" onclick="checkAdminPassword()">Enter</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+<script src="script.js"></script>
+
+</body>
+</html>

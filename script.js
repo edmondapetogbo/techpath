@@ -10,6 +10,8 @@ const T = {
     heroTitle:'Discover your <em>future</em> in computer science',
     heroSub:'8 questions. Personalised results. Built for students finishing high school who are ready to choose their tech path.',
     nameLabel:'Your name (optional)',namePlaceholder:'e.g. Amina',
+    phoneLabel:'Phone number (optional)',phonePlaceholder:'e.g. 99999999',
+    paiementLabel:'Payment code (Flooz)',paiementPlaceholder:'e.g. 3c9f8a7b',
     startBtn:'Start the quiz — takes 3 minutes',
     statStudents:'students taken',statPaths:'career paths',statTime:'average time',
     admin:'Admin',home:'Home',next:'Next →',backQuiz:'Back to quiz',
@@ -48,6 +50,8 @@ const T = {
     heroTitle:'Découvre ton <em>avenir</em> en informatique',
     heroSub:'8 questions. Résultats personnalisés. Conçu pour les lycéens prêts à choisir leur voie dans la tech.',
     nameLabel:'Ton prénom (Obligatoire)',namePlaceholder:'ex. Amina',
+    phoneLabel:'Numéro de téléphone (Obligatoire)',phonePlaceholder:'ex. 99999999',
+    paiementLabel:'Code de paiement (Flooz)',paiementPlaceholder:'ex. 3c9f8a7b',
     startBtn:'Commencer le quiz — 3 minutes',
     statStudents:'élèves ayant répondu',statPaths:'voies disponibles',statTime:'durée moyenne',
     admin:'Admin',home:'Accueil',next:'Suivant →',backQuiz:'Retour au quiz',
@@ -307,12 +311,14 @@ async function saveR(e){
 
   try{
       await fetch(
-          "https://script.google.com/macros/s/AKfycbw89UEv2Agq2Fyc_ScysuGpUmfueIZUQZ5rJFNal9ez_Kfxk-fKIKaN7yZC6_3RBbOJng/exec",
+          "https://script.google.com/macros/s/AKfycbxAflSy6nZsS5X7NdzvqkfhPLc8mmwl83Ic4SdnwqrNdnfWLPYox2tAB2QlrDkh247bhA/exec",
           {
               method:"POST",
               
               body:JSON.stringify({
                   name:e.name,
+                  phone:e.phone,
+                  paiement:e.paiement,
                   topMatch:e.top3[0]?.id || "",
                   topScore:e.top3[0]?.match || "",
                   secondMatch:e.top3[1]?.id || "",
@@ -342,6 +348,8 @@ function showAdmin(){renderAdmin();showPage('page-admin');}
 // ─── Quiz ─────────────────────────────────────────────────────────────────────
 function startQuiz(){
   studentName=document.getElementById('student-name').value.trim();
+  studentPhone=document.getElementById('student-phone').value.trim();
+  
   step=0; answers=[];
   showPage('page-quiz');
   renderQuestion();
@@ -374,7 +382,10 @@ function renderQuestion(){
   if(sel>=0) document.getElementById('btn-next').disabled=false;
 }
 
-function goNext(){if(step<QQ[lang].length-1){step++;renderQuestion();}else{runAI();}}
+function goNext(){if(step<QQ[lang].length-1){step++;renderQuestion();}else{showPage('page-payment');}}
+function continueToResult(){
+    runAI();
+}
 function goBack(){if(step>0){step--;renderQuestion();}}
 
 // ─── Scoring ──────────────────────────────────────────────────────────────────
@@ -411,7 +422,13 @@ function buildSmartFallback(ans){
 function runAI(){
   const result=buildSmartFallback(answers);
   lastResult=result;
-  saveR({id:Date.now(),name:studentName||(lang==='fr'?'Anonyme':'Anonymous'),date:new Date().toISOString(),top3:result.top3.map(x=>({id:x.id,match:x.match})),lang});
+  saveR({id:Date.now(),
+    name:studentName||(lang==='fr'?'Anonyme':'Anonymous'),
+    phone:studentPhone,
+    paiement: document.getElementById('payment-code').value.trim(),
+    
+    date:new Date().toISOString(),
+    top3:result.top3.map(x=>({id:x.id,match:x.match})),lang});
   updateCounter();
   renderResult(result);
   // Show loading screen briefly, then flip to results

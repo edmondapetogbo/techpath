@@ -36,6 +36,7 @@
     </div>
     <p class="nlabel" data-k="nameLabel"></p>
     <input class="nfield" id="student-name" maxlength="40" oninput="checkAdminBtn()"/>
+    <input class="nfield" id="student-phone" maxlength="40" placeholder="ex. 99999999"/>
     <button class="btn-start" onclick="startQuiz()"><i class="ti ti-arrow-right"></i> <span data-k="startBtn"></span></button>
     <div class="stat-row">
       <div class="stat-box"><div class="stat-num" id="hs-count">0</div><div class="stat-lbl" data-k="statStudents"></div></div>
@@ -78,6 +79,45 @@
   </div>
 </div>
 
+
+<!-- PAIEMENT  -->
+<div id="page-payment" class="page">
+  <div class="container">
+
+    <div class="hero-badge">
+      <i class="ti ti-heart"></i>
+      Support TechPath
+    </div>
+
+    <h2 class="hero-title">
+      Your result is ready 🎉
+    </h2>
+
+    <p class="hero-sub">
+      TechPath is free to use. If this quiz helped you,
+      you may support the project by sending a small token.
+      If not, simply leave this field empty and continue.
+    </p>
+
+    <input
+      class="nfield"
+      id="payment-code"
+      placeholder="Payment reference (optional)"
+    />
+
+    <div class="qbtns">
+      <button class="btn-ghost" onclick="continueToResult()">
+        Skip
+      </button>
+
+      <button class="btn-next" onclick="continueToResult()">
+        View Result
+      </button>
+    </div>
+
+  </div>
+</div>
+
 <!-- RESULT -->
 <div id="page-result" class="page">
   <nav class="nav">
@@ -107,6 +147,33 @@
       <div class="tip-lbl"><i class="ti ti-bulb"></i> <span data-k="tipLabel"></span></div>
       <div class="tip-txt" id="tip-text"></div>
     </div>
+    <div class="contact-box">
+  <div class="tip-lbl">
+    <i class="ti ti-message-circle"></i>
+    Need Personal Guidance?
+  </div>
+
+  <p class="contact-text">
+    Your TechPath result is a starting point. If you would like advice on
+    choosing a university program, learning roadmap, internships, AI,
+    Software Engineering, Cybersecurity, Data Science, or other technology
+    careers, feel free to contact me.
+  </p>
+
+  <div class="contact-links">
+    <a href="https://wa.me/99514155" target="_blank" class="contact-btn">
+      <i class="ti ti-brand-whatsapp"></i> WhatsApp
+    </a>
+
+    <a href="mailto:edmondapetogb@gmail.com" class="contact-btn">
+      <i class="ti ti-mail"></i> Email
+    </a>
+  </div>
+
+  <p class="contact-sign">
+    — Edmond APETOGBO
+  </p>
+</div>
     <div class="action-row">
       <button class="btn-share" onclick="copyShareText()"><i class="ti ti-copy"></i> <span data-k="copyBtn"></span></button>
       <button class="btn-share" onclick="downloadCard()"><i class="ti ti-download"></i> <span data-k="saveBtn"></span></button>

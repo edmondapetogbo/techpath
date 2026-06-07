@@ -308,7 +308,7 @@ async function saveR(e){
 
   try{
       await fetch(
-          "PASTE_YOUR_APPS_SCRIPT_URL_HERE",
+          "AKfycbyxSxJ6ZDAWdHF6GVVrFMwkDjsrkySmY1xS-wlYqG1HWGrqHZG-lrhJ90J1F05gp6n48Q",
           {
               method:"POST",
               headers:{
